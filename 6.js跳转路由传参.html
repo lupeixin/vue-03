@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="div">
+
+    <router-view></router-view>
+
+</div>
+
+<script src="js/vue.min.js"></script>
+<script src="js/vue-router.3.0.1.js"></script>
+<script>
+
+    let com1 = {
+        template: `
+            <div>这是组件1
+                <button @click="goPage">跳转到用户页面</button>
+            </div>
+        `,
+        methods: {
+            goPage(){
+                //this.$router.push('/com2?id=2');
+                //this.$router.push('/com2/2');
+                this.$router.push({path: '/com2/jay'});
+            },
+        }
+    }
+
+    let com2 = {
+        template: `
+        <div>这是组件2：接受组件1传递过来的参数---->: {{$route.query.id}}
+        <br> 这是用户名--->: {{$route.params.id}}---->{{$route.path}}
+        <br>
+        <button @click="goBack">返回上一页</button>
+        </div>
+        `,
+        methods: {
+            // 返回上一页的页面
+            goBack(){
+                //返回上一页
+                this.$router.go(-1);
+
+            },
+        }
+    }
+
+    let myRouter = new VueRouter({
+        routes: [
+            {path: '/com1', component: com1},
+            {path: '/com2/:id', component: com2},
+            {path: '/', redirect: '/com1'},
+        ]
+    })
+
+
+    new Vue({
+        el:"#div",
+        data:{},
+        router: myRouter,
+
+    })
+</script>
+
+</body>
+</html>
